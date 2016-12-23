@@ -4,9 +4,11 @@ brussels open data - public.parkings is a proof of concept (PoC).
 
 [public.parkings](http://opendatastore.brussels/en/dataset/parking-publicparkings) shows public car parkings in territory of the Brussels-Capital Region in Belgium. 
 
-![](https://github.com/neojudgment/brussels-open-data---wifi.brussels/blob/master/Brussels%20Open%20Data%20-%20wifi.brussels/Screenshots/home.jpg?raw=true)
+![](https://github.com/neojudgment/brussels-open-data-public.parkings/blob/master/brussels%20open%20data%20-%20public.parkings/Screenshots/home.jpg?raw=true)
 
-![](https://github.com/neojudgment/brussels-open-data---wifi.brussels/blob/master/Brussels%20Open%20Data%20-%20wifi.brussels/Screenshots/settings.jpg?raw=true)
+![](https://github.com/neojudgment/brussels-open-data-public.parkings/blob/master/brussels%20open%20data%20-%20public.parkings/Screenshots/settings.jpg?raw=true)
+
+![](https://github.com/neojudgment/brussels-open-data-public.parkings/blob/master/brussels%20open%20data%20-%20public.parkings/Screenshots/settings.jpg?raw=true)
 
 brussels open data - public parkings uses [Microsoft Windows API Code Pack](http://archive.msdn.microsoft.com/WindowsAPICodePack) for Microsoft .NET Framework, [GMap.NET](https://greatmaps.codeplex.com/) and [Newtonsoft.Json.dll](https://github.com/JamesNK/Newtonsoft.Json) to demonstrate how to retrieve data from [Brussels open data Store](http://opendatastore.brussels/en/).
 
