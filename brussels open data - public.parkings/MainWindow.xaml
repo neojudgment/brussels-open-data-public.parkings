@@ -17,6 +17,7 @@
               ResizeMode="NoResize"
               TextOptions.TextFormattingMode="Display"
               TextOptions.TextRenderingMode="ClearType"
+              StateChanged="WindowStateChanged"
               WindowStartupLocation="CenterScreen">
 
     <Grid>

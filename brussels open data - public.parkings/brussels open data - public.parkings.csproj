@@ -39,7 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <IncrementalBuild>true</IncrementalBuild>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Bbrussels open data - wifi.brussels.xml</DocumentationFile>
+    <DocumentationFile>brussels open data - public.parkings.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -50,7 +50,7 @@
     <IncrementalBuild>false</IncrementalBuild>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>brussels open data - wifi.brussels.xml</DocumentationFile>
+    <DocumentationFile>brussels open data - public.parkings.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
   </PropertyGroup>
@@ -83,7 +83,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineConstants>TRACE</DefineConstants>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DocumentationFile>brussels open data - wifi.brussels.xml</DocumentationFile>
+    <DocumentationFile>brussels open data - public.parkings.xml</DocumentationFile>
     <Optimize>false</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>

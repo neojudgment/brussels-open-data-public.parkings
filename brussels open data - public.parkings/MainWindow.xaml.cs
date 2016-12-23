@@ -45,6 +45,7 @@ using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -76,6 +77,8 @@ namespace OpenData
         public string Coordinates1;
         private const double BxlLatitude = 50.844;
         private const double BxlLongitude = 4.360;
+        private const int ScMove = 0xF010;
+        private const int WmSyscommand = 0x112;
         private static bool _InternetscanState;
         private static SerialPort _spa;
         private static StreamWriter Sw;
@@ -115,6 +118,8 @@ namespace OpenData
         public MainWindow()
         {
             InitializeComponent();
+
+            SourceInitialized += WindowsSourceInitialized;
 
             CreateDirectory();
 
@@ -1978,5 +1983,51 @@ namespace OpenData
         }
 
         #endregion MainMapPrefetch
+
+        #region WindowsSourceInitialized
+
+        private void WindowsSourceInitialized(object sender, EventArgs e)
+        {
+            WindowInteropHelper helper = new WindowInteropHelper(this);
+            HwndSource source = HwndSource.FromHwnd(helper.Handle);
+            source.AddHook(WndProc);
+        }
+
+        #endregion WindowsSourceInitialized
+
+        #region WndProc
+
+        private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch (msg)
+            {
+                case WmSyscommand:
+                    int command = wParam.ToInt32() & 0xFFF0;
+                    if (command == ScMove)
+                    {
+                        handled = false;
+                    }
+                    break;
+            }
+            return IntPtr.Zero;
+        }
+
+        #endregion WndProc
+
+        #region WndProc
+
+        private void WindowStateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+            }
+        }
+
+        #endregion WndProc
     }
 }
