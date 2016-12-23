@@ -6,7 +6,7 @@ brussels open data - public.parkings is a proof of concept (PoC).
 
 ![](https://github.com/neojudgment/brussels-open-data-public.parkings/blob/master/brussels%20open%20data%20-%20public.parkings/Screenshots/home.jpg?raw=true)
 
-![](https://github.com/neojudgment/brussels-open-data-public.parkings/blob/master/brussels%20open%20data%20-%20public.parkings/Screenshots/settings.jpg?raw=true)
+![](https://github.com/neojudgment/brussels-open-data-public.parkings/blob/master/brussels%20open%20data%20-%20public.parkings/Screenshots/route.jpg?raw=true)
 
 ![](https://github.com/neojudgment/brussels-open-data-public.parkings/blob/master/brussels%20open%20data%20-%20public.parkings/Screenshots/settings.jpg?raw=true)
 
