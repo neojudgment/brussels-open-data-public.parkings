@@ -58,7 +58,7 @@ namespace OpenData
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     ///
-    [Guid("204A7213-7D92-4542-805C-EE25816C4073")]
+    [Guid("204A7213-7D93-4542-805C-EE25816C4073")]
     public partial class MainWindow
     {
         #region Variables
@@ -1142,7 +1142,7 @@ namespace OpenData
                 _watcherState = false;
                 LinearProgressBar.Visibility = Visibility.Hidden;
 
-                MainMap.Zoom = 12;
+                MainMap.Zoom = 13;
                 MainMap.Position = new PointLatLng(BxlLatitude, BxlLongitude);
             }
 

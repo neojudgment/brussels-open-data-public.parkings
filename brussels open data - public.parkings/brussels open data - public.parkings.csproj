@@ -71,7 +71,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DocumentationFile>brussels open data - wifi.brussels.xml</DocumentationFile>
+    <DocumentationFile>brussels open data - public.parkings.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -326,9 +326,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\wi-fi-2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\wi-fi-3.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\flag-export.png" />

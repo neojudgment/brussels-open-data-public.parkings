@@ -178,9 +178,6 @@
   <data name="wi_fi_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wi-fi-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="wi_fi_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wi-fi-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="flag_export" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\flag-export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
