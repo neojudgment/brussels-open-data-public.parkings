@@ -18,7 +18,7 @@
 // |    You should have received a copy of the Microsoft Public License (Ms-RL)                                 |
 // |    along with this program.  If not, see <http://opensource.org/licenses/MS-RL>.                           |
 // |                                                                                                            |
-// |    Copyright © Pascal Hubert - Brussels, Belgium 2016. <mailto:pascal.hubert@outlook.com>                  |
+// |    Copyright © Pascal Hubert - Brussels, Belgium 2017. <mailto:pascal.hubert@outlook.com>                  |
 // •————————————————————————————————————————————————————————————————————————————————————————————————————————————•
 
 using Microsoft.VisualBasic;
