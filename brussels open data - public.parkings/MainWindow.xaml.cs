@@ -59,7 +59,7 @@ namespace OpenData
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     ///
-    [Guid("204A7213-7D93-4542-805C-EE25816C4073")]
+    [Guid("22581AC1-24C4-41E9-8CBD-AFD3AE82C1D9")]
     public partial class MainWindow
     {
         #region Variables
@@ -202,7 +202,7 @@ namespace OpenData
             GMapProvider.Language = LanguageType.English;
             MainMap.MaxZoom = 18;
             MainMap.MinZoom = 10;
-            MainMap.Zoom = 13;
+            MainMap.Zoom = 14;
             MainMap.CacheLocation = GetFolderPath(SpecialFolder.CommonApplicationData) + "\\brussels open data - public.parkings\\cache\\";
             MainMap.IgnoreMarkerOnMouseWheel = true;
             MainMap.DragButton = MouseButton.Right;
@@ -820,7 +820,7 @@ namespace OpenData
             {
                 // C'est un refresh. On déplace la carte (pas besoin de request).
                 MainMap.Position = new PointLatLng(BxlLatitude, BxlLongitude);
-                MainMap.Zoom = 13;
+                MainMap.Zoom = 14;
                 Trace.WriteLine(DateTime.Now + " " + "Déplacement de la carte après un refresh (pas de request)");
 
                 LinearProgressBar.Visibility = Visibility.Hidden;
@@ -1147,7 +1147,7 @@ namespace OpenData
                 _watcherState = false;
                 LinearProgressBar.Visibility = Visibility.Hidden;
 
-                MainMap.Zoom = 13;
+                MainMap.Zoom = 14;
                 MainMap.Position = new PointLatLng(BxlLatitude, BxlLongitude);
             }
 
