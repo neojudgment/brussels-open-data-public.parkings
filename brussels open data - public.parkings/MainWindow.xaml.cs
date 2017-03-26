@@ -389,21 +389,33 @@ namespace OpenData
 
                 do
                 {
-                    if (!string.IsNullOrEmpty(ab.features[i].geometry.coordinates[0].ToString(CultureInfo.InvariantCulture)))
+                    try
                     {
-                        Coordinates0 = ab.features[i].geometry.coordinates[0].ToString(CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                        if (!string.IsNullOrEmpty(ab.features[i].geometry.coordinates[0].ToString(CultureInfo.InvariantCulture)))
+                        {
+                            Coordinates0 = ab.features[i].geometry.coordinates[0].ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                        {
+                            i += 1;
+                            continue;
+                        }
 
-                    if (!string.IsNullOrEmpty(ab.features[i].geometry.coordinates[1].ToString(CultureInfo.InvariantCulture)))
-                    {
-                        Coordinates1 = ab.features[i].geometry.coordinates[1].ToString(CultureInfo.InvariantCulture);
+                        if (!string.IsNullOrEmpty(ab.features[i].geometry.coordinates[1].ToString(CultureInfo.InvariantCulture)))
+                        {
+                            Coordinates1 = ab.features[i].geometry.coordinates[1].ToString(CultureInfo.InvariantCulture);
+                        }
+                        else
+                        {
+                            i += 1;
+                            continue;
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
+                        Trace.WriteLine(DateTime.Now + " " + "Exception dans PopulateBingMap " + ex);
+                        Console.WriteLine(i);
+                        i += 1;
                         continue;
                     }
 
@@ -417,11 +429,11 @@ namespace OpenData
 
                     if (_mytag == i)
                     {
-                        myIcon = new BitmapImage(new Uri("Resources\\wi-fi-6.png", UriKind.Relative));
+                        myIcon = new BitmapImage(new Uri("Resources\\parking6.png", UriKind.Relative));
                     }
                     else
                     {
-                        myIcon = new BitmapImage(new Uri("Resources\\wi-fi-2.png", UriKind.Relative));
+                        myIcon = new BitmapImage(new Uri("Resources\\parking2.png", UriKind.Relative));
                     }
 
                     marker.Shape = new Image

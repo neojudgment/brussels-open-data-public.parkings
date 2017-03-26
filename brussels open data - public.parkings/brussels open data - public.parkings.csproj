@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenData</RootNamespace>
-    <AssemblyName>brussels open data - public.parkings</AssemblyName>
+    <AssemblyName>public.parkings</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -240,6 +240,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Resource Include="fonts\SegoeWP.ttf" />
     <None Include="packages.config" />
@@ -325,13 +326,13 @@
     <Resource Include="Resources\test.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\wi-fi-2.png" />
+    <Resource Include="Resources\parking2.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\flag-export.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\wi-fi-6.png" />
+    <Resource Include="Resources\parking6.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\default.gif" />
