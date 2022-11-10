@@ -18,12 +18,13 @@
 // |    You should have received a copy of the Microsoft Public License (Ms-RL)                                 |
 // |    along with this program.  If not, see <http://opensource.org/licenses/MS-RL>.                           |
 // |                                                                                                            |
-// |    Copyright © Pascal Hubert - Brussels, Belgium 2017. <mailto:pascal.hubert@outlook.com>                  |
+// |    Copyright © Pascal Hubert - Brussels, Belgium 2022. <mailto:pascal.hubert@outlook.com>                  |
 // •————————————————————————————————————————————————————————————————————————————————————————————————————————————•
 
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
+using TilePrefetcher = GMap.NET.WindowsPresentation.TilePrefetcher;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using Newtonsoft.Json;
 using OpenData.Properties;
@@ -48,9 +49,11 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml;
 using static System.Environment;
+using Path = System.IO.Path;
 using ThreadState = System.Threading.ThreadState;
 
 namespace OpenData
@@ -126,10 +129,26 @@ namespace OpenData
             ProfileOptimization.SetProfileRoot(GetFolderPath(SpecialFolder.ApplicationData) + "\\brussels open data - public.parkings" + "\\profiles");
             ProfileOptimization.StartProfile("profile");
 
+            // On crée le répertoire du Trace.Listeners s'il n'exite pas.
+            try
+            {
+                if (!Directory.Exists(GetFolderPath(SpecialFolder.ApplicationData) + "\\brussels open data - public.parkings"))
+                {
+
+                    DirectoryInfo di = Directory.CreateDirectory(
+               GetFolderPath(SpecialFolder.ApplicationData) + "\\brussels open data - public.parkings");
+                }
+            }
+
+            catch (IOException ioex)
+            {
+                Console.WriteLine(ioex.Message);
+            }
+
             // Initialisation du Trace.Listeners
             Sw = new StreamWriter(
                GetFolderPath(SpecialFolder.ApplicationData) +
-               "\\brussels open data - public.parkings\\log\\OpenData-public.parkings.log", false);
+               "\\brussels open data - public.parkings\\OpenData-public.parkings.log", false);
 
             _tl = new TextWriterTraceListener(Sw);
             InitialisationTraceListener();
@@ -382,7 +401,7 @@ namespace OpenData
             {
                 string json =
                     File.ReadAllText(GetFolderPath(SpecialFolder.ApplicationData) +
-                                     "\\brussels open data - public.parkings\\json\\geoserver-GetFeature.json");
+                                     "\\brussels open data - public.parkings\\geoserver-GetFeature.json");
 
                 Json2Csharp.RootObject ab = JsonConvert.DeserializeObject<Json2Csharp.RootObject>(json);
                 int i = 1;
@@ -494,10 +513,10 @@ namespace OpenData
                 if (fiLength > 20000)
                 {
                     File.Delete(GetFolderPath(SpecialFolder.ApplicationData) +
-                    "\\brussels open data - public.parkings\\json\\geoserver-GetFeature.json");
+                    "\\brussels open data - public.parkings\\geoserver-GetFeature.json");
 
                     File.Move(TempPath + "geoserver-GetFeature.json", GetFolderPath(SpecialFolder.ApplicationData) +
-                    "\\brussels open data - public.parkings\\json\\geoserver-GetFeature.json");
+                    "\\brussels open data - public.parkings\\geoserver-GetFeature.json");
 
                     PopulateBingMap();
                 }
@@ -549,7 +568,7 @@ namespace OpenData
 
                 string json =
                 File.ReadAllText(GetFolderPath(SpecialFolder.ApplicationData) +
-                                 "\\brussels open data - public.parkings\\json\\geoserver-GetFeature.json");
+                                 "\\brussels open data - public.parkings\\geoserver-GetFeature.json");
 
                 Json2Csharp.RootObject ab = JsonConvert.DeserializeObject<Json2Csharp.RootObject>(json);
 
@@ -1356,7 +1375,7 @@ namespace OpenData
 
         private double CalculDistance(double lat1, double long1, double lat2, double long2)
         {
-            GMapRoute r = null;
+            //GMapRoute r = null;
             double dist = 0;
             PointLatLng start = new PointLatLng(lat2, long2);
             PointLatLng end = new PointLatLng(lat1, long1);
@@ -1368,89 +1387,96 @@ namespace OpenData
                 {
                     if (Settings.Default.Routing || Settings.Default.DistanceAccuracy)
                     {
-                        DirectionsStatusCode xx = GMapProviders.GoogleMap.GetDirections(out GDirections ss, start, end, true, true, true, false, true);
-                        r = new GMapRoute(ss.Route);
 
-                        Trace.WriteLine(DateTime.Now + " " + "Temps total de trajet: " + ss.Duration);
-                        Console.WriteLine("Temps total de trajet: " + ss.Duration);
+                        DirectionsStatusCode Res = GMapProviders.GoogleMap.GetDirections(out GDirections gd, start, end, true, true, true, false, true);
 
-                        // Direction à suivre
-                        string html = StripHTML(Convert.ToString(ss.Steps[0]));
-                        Trace.WriteLine(DateTime.Now + " " + "Direction: " + html);
-                        Console.WriteLine("Direction: " + html);
-
-                        if (Settings.Default.Routing)
+                        if (Res == DirectionsStatusCode.OK)
                         {
-                            if (!(mRoute == null))
-                            {
-                                // On efface l'itinéraire précédent
-                                mRoute.Clear();
-                            }
 
-                            if (ss != null)
-                            {
-                                List<PointLatLng> track = new List<PointLatLng>();
+                            GMapRoute r = new GMapRoute(gd.Route);
 
-                                do
+                            Trace.WriteLine(DateTime.Now + " " + "Temps total de trajet: " + gd.Duration);
+                            Console.WriteLine("Temps total de trajet: " + gd.Duration);
+
+                            // Direction à suivre
+                            string html = StripHTML(Convert.ToString(gd.Steps[0]));
+                            Trace.WriteLine(DateTime.Now + " " + "Direction: " + html);
+                            Console.WriteLine("Direction: " + html);
+
+                            if (Settings.Default.Routing)
+                            {
+                                if (!(mRoute == null))
                                 {
-                                    track.Add(r.Points[i]);
-                                    i += 1;
+                                    // On efface l'itinéraire précédent
+                                    mRoute.Clear();
                                 }
-                                while (!(i == r.Points.Count));
 
-                                try
+                                if (gd != null)
                                 {
-                                    mRoute = new GMapRoute(track);
+                                    List<PointLatLng> track = new List<PointLatLng>();
+
+                                    do
                                     {
-                                        // On dessine l'itinéraire
-                                        mRoute.ZIndex = 9999;
-                                        mRoute.RegenerateShape(MainMap);
-                                        SolidColorBrush NewBrush = (SolidColorBrush)new BrushConverter().ConvertFromString(Settings.Default.RouteColor);
-                                        (mRoute.Shape as System.Windows.Shapes.Path).Stroke = NewBrush;
-                                        (mRoute.Shape as System.Windows.Shapes.Path).StrokeThickness = 2;
-                                        mRoute.RegenerateShape(MainMap);
-                                        MainMap.Markers.Add(mRoute);
-
-                                        // C'est la première fois que l'on dessine l'itinéraire on zoom
-                                        if (!newmroute)
-                                        {
-                                            ButtonWatcherMouseDown(null, null);
-                                        }
-                                        newmroute = true;
+                                        track.Add(r.Points[i]);
+                                        i += 1;
                                     }
-                                }
-                                catch (Exception ex)
-                                {
-                                    Trace.WriteLine(DateTime.Now + " " + "Erreur dans MovePushpinWatcher: " + ex);
-                                }
+                                    while (!(i == r.Points.Count));
 
-                                MovePushpin();
+                                    try
+                                    {
+                                        mRoute = new GMapRoute(track);
+                                        {
+                                            // On dessine l'itinéraire
+                                            mRoute.ZIndex = 9999;
+                                            //mRoute.RegenerateShape(MainMap);
+                                            SolidColorBrush NewBrush = (SolidColorBrush)new BrushConverter().ConvertFromString(Settings.Default.RouteColor);
+                                            (mRoute.Shape as System.Windows.Shapes.Path).Stroke = NewBrush;
+                                            (mRoute.Shape as System.Windows.Shapes.Path).StrokeThickness = 2;
+                                            //mRoute.RegenerateShape(MainMap);
+                                            MainMap.Markers.Add(mRoute);
+
+
+                                            // C'est la première fois que l'on dessine l'itinéraire on zoom
+                                            if (!newmroute)
+                                            {
+                                                ButtonWatcherMouseDown(null, null);
+                                            }
+                                            newmroute = true;
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Trace.WriteLine(DateTime.Now + " " + "Erreur dans MovePushpinWatcher: " + ex);
+                                    }
+
+                                    MovePushpin();
+                                }
                             }
-                        }
 
-                        // Calcule la distance en ligne
-                        dist = Convert.ToDouble((ss.Distance).Remove((ss.Distance).Length - 3));
-                        Trace.WriteLine(DateTime.Now + " " + "Calcul distance en ligne: " + string.Format("{0:0.0}", dist) + " km");
+                            // Calcule la distance en ligne
+                            dist = Convert.ToDouble((gd.Distance).Remove((gd.Distance).Length - 3));
+                            Trace.WriteLine(DateTime.Now + " " + "Calcul distance en ligne: " + string.Format("{0:0.0}", dist) + " km");
+                            return dist;
+                        }
+                    }
+
+                    if (!(Settings.Default.DistanceAccuracy))
+                    {
+                        // Calcule la distance hors ligne
+                        double theta = long1 - long2;
+                        dist = Math.Sin(Deg2Rad(lat1)) * Math.Sin(Deg2Rad(lat2)) +
+                               Math.Cos(Deg2Rad(lat1)) * Math.Cos(Deg2Rad(lat2)) * Math.Cos(Deg2Rad(theta));
+                        dist = Math.Acos(dist);
+                        dist = Rad2Deg(dist);
+                        dist = dist * 60 * 1.1515;
+                        dist = dist * 1.609344;
+
+                        if (Math.Round(dist, 1) > 0.0)
+                        {
+                            Trace.WriteLine(DateTime.Now + " " + "Calcul distance hors ligne: " + string.Format("{0:0.0}", dist) + " km");
+                        }
                         return dist;
                     }
-                }
-
-                if (!(Settings.Default.DistanceAccuracy))
-                {
-                    // Calcule la distance hors ligne
-                    double theta = long1 - long2;
-                    dist = Math.Sin(Deg2Rad(lat1)) * Math.Sin(Deg2Rad(lat2)) +
-                           Math.Cos(Deg2Rad(lat1)) * Math.Cos(Deg2Rad(lat2)) * Math.Cos(Deg2Rad(theta));
-                    dist = Math.Acos(dist);
-                    dist = Rad2Deg(dist);
-                    dist = dist * 60 * 1.1515;
-                    dist = dist * 1.609344;
-
-                    if (Math.Round(dist, 1) > 0.0)
-                    {
-                        Trace.WriteLine(DateTime.Now + " " + "Calcul distance hors ligne: " + string.Format("{0:0.0}", dist) + " km");
-                    }
-                    return dist;
                 }
             }
             catch (Exception ex)
